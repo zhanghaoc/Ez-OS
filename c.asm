@@ -42,8 +42,8 @@ start:
 	MOV BH, backColor    ; YellowOnBlue
 	INT 10H
 	
-	;监控程序已设置数据段基地址 
-	;mov ds,ax
+	mov ax,cs
+	mov ds,ax
 
 	mov ax,0B800h				; 文本窗口显存起始地址
 	mov es,ax					; GS = B800h
@@ -226,8 +226,9 @@ DrawRight:
 	cmp ax, 2e03h			;判定输入是否是ctrl+c,比较asc码（ah是扫描码）
 	  jne loop1				;输入不是ctrl+c, 无事发生，跳回loop1
 	
-	pop ax					;考虑到内存有4MB以及监控程序常驻，直接跳回在栈中保存地址即可
-	jmp ax
+	;pop ax					;考虑到内存有4MB以及监控程序常驻，直接跳回在栈中保存地址即可
+	;jmp ax
+	retf
 	
 _end:
     jmp $                   ; 停止画框，无限循环 

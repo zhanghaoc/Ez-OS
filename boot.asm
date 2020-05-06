@@ -60,20 +60,18 @@ LoadnEx:
       mov ch,0                 ;柱面号 ; 起始编号为0
       ;mov cl,2                 ;起始扇区号 ; 起始编号为1
       int 13H ;                调用读磁盘BIOS的13h功能
-	  mov ax, 0x800
-	  mov ds, ax				;ds要修改才能正常
-      ; 用户程序*.com已加载到指定内存区域中
-	  mov ax, Start
-	  push ax
-      jmp OffSetOfUserPrg
+	  
+      call far [newAddr]
+	  jmp Start
 		
 AfterRun:
       jmp $                      ;无限循环
 datadef:
       Message db 'Hello, welcome to zhxOS!'
+	  Message1Len  equ ($-Message)
 	  Message2 db 'please input a number between 1 and 4'
-Message1Len  equ (Message2-Message)
-Message2Len  equ ($-Message2)
+	  Message2Len  equ ($-Message2)
+	  newAddr dw 0x0100, 0x0800
       times 510-($-$$) db 0
       db 0x55,0xaa
 
